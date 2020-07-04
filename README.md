@@ -1,9 +1,9 @@
 # ninety9names
 
-Implementation of SA Bodhanya's Excel 99names application
+Flutter implementation of SA Bodhanya's Excel 99names application
 
 ## How to contribute
-- Please see [issues](https://github.com/thameezb/ninety9names/issues/) to assit with currently required tasks
+- Please see [issues](https://github.com/thameezb/ninety9names_flutter/issues/) to assit with currently required tasks
     -   Please submit all code on distinctly named branches and submit a pull request for code to be         reviewed
     - Try to adhear to distinct commits with small PRs 
  
