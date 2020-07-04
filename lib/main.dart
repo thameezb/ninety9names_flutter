@@ -12,12 +12,40 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'nitety9names',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        title: 'nitety9names',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => MyHomePage(title: 'ninety9names'),
+          '/details': (context) => Details(),
+        });
+  }
+}
+
+class Details extends StatelessWidget {
+  static const routeName = '/details';
+
+  @override
+  Widget build(BuildContext context) {
+    final Name n = ModalRoute.of(context).settings.arguments;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(n.arabic),
       ),
-      home: MyHomePage(title: 'ninety9names'),
+      body: Center(
+        child: ListView(
+          children: [
+            ListTile(title: Text('Number: ${n.id}')),
+            ListTile(title: Text('Transliteration: ${n.transliteration}')),
+            ListTile(title: Text('Meaning: ${n.meaningGeneral}')),
+            ListTile(title: Text("Shaykh's meaning: ${n.meaningShaykh}")),
+            ListTile(title: Text('Explanation: ${n.explanation}'))
+          ],
+        ),
+      ),
     );
   }
 }
@@ -45,8 +73,8 @@ class Name {
       : id = json["id"],
         arabic = json["arabic"],
         transliteration = json["transliteration"],
-        meaningShaykh = json["meaningShaykh"],
-        meaningGeneral = json["meaningGeneral"],
+        meaningShaykh = json["meaning_shaykh"],
+        meaningGeneral = json["meaning_general"],
         explanation = json["explanation"];
 }
 
@@ -73,9 +101,15 @@ class _MyHomePageState extends State<MyHomePage> {
     return ListView(
         children: names
             .map((n) => Card(
-                  child: ListTile(
-                    title: Text(n.transliteration),
-                    trailing: Text(n.arabic),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/details', arguments: n);
+                    },
+                    behavior: HitTestBehavior.translucent,
+                    child: ListTile(
+                      title: Text('${n.id}. ${n.transliteration}'),
+                      trailing: Text(n.arabic),
+                    ),
                   ),
                 ))
             .toList());
@@ -87,33 +121,35 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: FutureBuilder<List<Name>>(
-        future: futureNames,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return displayNames(snapshot.data);
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Icon(
-                    Icons.error_outline,
-                    color: Colors.red,
-                    size: 60,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16),
-                    child: Text('Error: ${snapshot.error}'),
-                  )
-                ],
-              ),
-            );
-          }
-          // By default, show a loading spinner.
-          return CircularProgressIndicator();
-        },
+      body: Center(
+        child: FutureBuilder<List<Name>>(
+          future: futureNames,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return displayNames(snapshot.data);
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.error_outline,
+                      color: Colors.red,
+                      size: 60,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: Text('Error: ${snapshot.error}'),
+                    )
+                  ],
+                ),
+              );
+            }
+            // By default, show a loading spinner.
+            return CircularProgressIndicator();
+          },
+        ),
       ),
     );
   }
