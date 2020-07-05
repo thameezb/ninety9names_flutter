@@ -108,6 +108,21 @@ class _ViewAllNamesState extends State<ViewAllNames> {
   }
 }
 
+List<Widget> displayName(Name n) {
+  Widget formatFields(String t, String st) {
+    return Expanded(child: ListTile(title: Text(t), subtitle: Text(st)));
+  }
+
+  return ([
+    formatFields('Number:', n.id),
+    formatFields('Arabic:', n.arabic),
+    formatFields('Transliteration:', n.transliteration),
+    formatFields('Meaning:', n.meaningGeneral),
+    formatFields("Shaykh's meaning:", n.meaningShaykh),
+    formatFields('Explanation:', n.explanation),
+  ]);
+}
+
 class Details extends StatelessWidget {
   static const routeName = '/details';
 
@@ -120,13 +135,7 @@ class Details extends StatelessWidget {
       ),
       body: Center(
         child: ListView(
-          children: [
-            ListTile(title: Text('Number: ${n.id}')),
-            ListTile(title: Text('Transliteration: ${n.transliteration}')),
-            ListTile(title: Text('Meaning: ${n.meaningGeneral}')),
-            ListTile(title: Text("Shaykh's meaning: ${n.meaningShaykh}")),
-            ListTile(title: Text('Explanation: ${n.explanation}'))
-          ],
+          children: displayName(n),
         ),
       ),
     );
@@ -139,26 +148,176 @@ class Challenge extends StatefulWidget {
 }
 
 class _ChallengeState extends State<Challenge> {
+  TextEditingController _controller;
+  Name n = Name("1", "Ar Rahmaan", "Ar Rahmaan", "Ar Rahmaan", "Ar Rahmaan",
+      "Ar Rahmaan");
+  bool isEnglish;
+  int _currentIndex = 0;
+  int score = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  displayAnswer(Name n, bool isCorrect, isEnglish) async {
+    Column title = Column(
+      children: [
+        Icon(Icons.thumb_down, color: Colors.red),
+        Text(
+          "Sorry, your answer is incorrect",
+          style: TextStyle(fontSize: 20, color: Colors.red),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+
+    if (isCorrect == true) {
+      title = Column(
+        children: [
+          Icon(Icons.thumb_up, color: Colors.green),
+          Text(
+            "Correct!",
+            style: TextStyle(fontSize: 20, color: Colors.green),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      );
+      setState(() {
+        score++;
+      });
+    }
+
+    List<Widget> getDialog(Name n) {
+      List<Widget> dialog = [
+        ListTile(title: title),
+        ListTile(
+            title: Text(
+          "${n.meaningShaykh} translates to ${n.arabic}",
+          textAlign: TextAlign.center,
+        )),
+      ];
+      dialog.addAll(displayName(n));
+      return dialog;
+    }
+
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Container(
+            height: MediaQuery.of(context).size.height * 0.9,
+            child: Column(children: getDialog(n)),
+          ),
+          actions: [
+            FlatButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              color: Colors.green,
+              child: Text("Try another"),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  checkAnswer(Name n, String answer, bool isEnglish) async {
+    if (answer == "") {
+      return null;
+    }
+
+    bool isCorrect;
+    if (isEnglish == true) {
+      if (n.arabic.toLowerCase().compareTo(answer.toLowerCase()) == 0) {
+        isCorrect = true;
+      }
+    } else {
+      if (n.meaningShaykh.toLowerCase().compareTo(answer.toLowerCase()) == 0) {
+        isCorrect = true;
+      }
+    }
+    await displayAnswer(n, isCorrect, isEnglish);
+  }
+
+  Text getTitle(Name n, bool isEnglish) {
+    String title = "${n.arabic} - ${n.transliteration}";
+    if (isEnglish == true) {
+      title = n.meaningShaykh;
+    }
+    return Text(title, style: TextStyle(fontSize: 25));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          Card(
-            child: Row(
-              children: [],
+          Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ListTile(title: Text("Do you know the meaning of?")),
+                Center(
+                  child: getTitle(n, isEnglish),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: TextField(
+                        controller: _controller,
+                        onSubmitted: (String value) {
+                          checkAnswer(n, value, isEnglish);
+                          _controller.clear();
+                        },
+                        decoration: InputDecoration(
+                            labelText: 'Enter your answer',
+                            border: UnderlineInputBorder()),
+                      ),
+                      width: MediaQuery.of(context).size.width * 0.9,
+                    ),
+                  ],
+                ),
+                RaisedButton(
+                  onPressed: () {
+                    checkAnswer(n, _controller.text, isEnglish);
+                    _controller.clear();
+                  },
+                  color: Colors.green,
+                  child: Text("Submit"),
+                ),
+              ],
             ),
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(items: [
-        BottomNavigationBarItem(
-            icon: Icon(Icons.translate), title: Text("Arabic")),
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (int index) {
+          setState(() {
+            _currentIndex = index;
+            isEnglish = index == 1;
+          });
+        },
+        currentIndex: _currentIndex,
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.translate), title: Text("Arabic")),
 //            BottomNavigationBarItem(
 //                icon: Icon(Icons.trending_up), title: Text("High Scores")),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.text_format), title: Text("English")),
-      ]),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.text_format), title: Text("English")),
+        ],
+      ),
     );
   }
 }
@@ -227,19 +386,19 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
             title: Text(widget.title),
             bottom: TabBar(tabs: [
               Tab(text: 'Names'),
-//              Tab(text: 'Challenge'),
+              Tab(text: 'Challenge'),
               Tab(text: 'About'),
             ])),
         body: TabBarView(
           children: [
             ViewAllNames(futureNames: futureNames),
-//            Challenge(),
+            Challenge(),
             About(),
           ],
         ),
