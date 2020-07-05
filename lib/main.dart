@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'nitety9names',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.green,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         initialRoute: '/',
@@ -140,30 +141,55 @@ class Challenge extends StatefulWidget {
 class _ChallengeState extends State<Challenge> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
+    return Scaffold(
+      body: Column(
         children: [
           Card(
             child: Row(
               children: [],
             ),
           ),
-          ButtonBar(
-            alignment: MainAxisAlignment.center,
-            children: [
-              RaisedButton(
-                onPressed: () {},
-                child: Text('English'),
-              ),
-              RaisedButton(
-                onPressed: () {},
-                child: Text('Display Name Details'),
-              ),
-              RaisedButton(
-                onPressed: () {},
-                child: Text('Arabic'),
-              ),
-            ],
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(items: [
+        BottomNavigationBarItem(
+            icon: Icon(Icons.translate), title: Text("Arabic")),
+//            BottomNavigationBarItem(
+//                icon: Icon(Icons.trending_up), title: Text("High Scores")),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.text_format), title: Text("English")),
+      ]),
+    );
+  }
+}
+
+class About extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListView(
+        children: [
+          ListTile(
+            title: Text("Description:"),
+            subtitle: Text(
+                "Flutter implementation of SA Bodhanya's Excel 99names application"),
+          ),
+          ListTile(
+            title: Text("Bug Tracker & Feature Request:"),
+            subtitle: GestureDetector(
+              child: Text("Issue Page",
+                  style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      color: Colors.blue)),
+              onTap: () {
+                launch(
+                    'https://github.com/thameezb/ninety9names_flutter/issues/');
+              },
+            ),
+          ),
+          ListTile(
+            title: Text("Developed by:"),
+            subtitle: Text("tabodhanya"),
           ),
         ],
       ),
@@ -207,12 +233,14 @@ class _MyHomePageState extends State<MyHomePage> {
             title: Text(widget.title),
             bottom: TabBar(tabs: [
               Tab(text: 'Names'),
-              Tab(text: 'Challenge'),
+//              Tab(text: 'Challenge'),
+              Tab(text: 'About'),
             ])),
         body: TabBarView(
           children: [
             ViewAllNames(futureNames: futureNames),
-            Challenge(),
+//            Challenge(),
+            About(),
           ],
         ),
       ),
