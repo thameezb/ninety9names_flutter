@@ -137,7 +137,9 @@ class Details extends StatelessWidget {
         title: Text(n.arabic),
       ),
       body: Center(
-        child: ListView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: displayName(n),
         ),
       ),
