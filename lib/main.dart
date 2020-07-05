@@ -46,10 +46,42 @@ class Name {
         explanation = json["explanation"];
 }
 
+Widget returnFutureBuilder(future, func) {
+  return Center(
+    child: FutureBuilder<List<Name>>(
+      future: future,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return func(snapshot.data);
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  Icons.error_outline,
+                  color: Colors.red,
+                  size: 60,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Text('Error: ${snapshot.error}'),
+                )
+              ],
+            ),
+          );
+        }
+        // By default, show a loading spinner.
+        return CircularProgressIndicator();
+      },
+    ),
+  );
+}
+
 class ViewAllNames extends StatefulWidget {
   ViewAllNames({Key key, this.futureNames}) : super(key: key);
   final Future<List<Name>> futureNames;
-
   @override
   _ViewAllNamesState createState() => _ViewAllNamesState();
 }
@@ -75,36 +107,7 @@ class _ViewAllNamesState extends State<ViewAllNames> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: FutureBuilder<List<Name>>(
-        future: widget.futureNames,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return displayNames(snapshot.data);
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Icon(
-                    Icons.error_outline,
-                    color: Colors.red,
-                    size: 60,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16),
-                    child: Text('Error: ${snapshot.error}'),
-                  )
-                ],
-              ),
-            );
-          }
-          // By default, show a loading spinner.
-          return CircularProgressIndicator();
-        },
-      ),
-    );
+    return returnFutureBuilder(widget.futureNames, displayNames);
   }
 }
 
@@ -148,17 +151,26 @@ class Challenge extends StatefulWidget {
 }
 
 class _ChallengeState extends State<Challenge> {
+  Future<Name> futureName;
   TextEditingController _controller;
-  Name n = Name("1", "Ar Rahmaan", "Ar Rahmaan", "Ar Rahmaan", "Ar Rahmaan",
-      "Ar Rahmaan");
   bool isEnglish;
   int _currentIndex = 0;
   int score = 0;
+
+  Future<Name> fetchName(String url) async {
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      return Name.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load names');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
+    futureName = fetchName("https://ninety9names.herokuapp.com/bff/names/r");
   }
 
   @override
@@ -200,7 +212,7 @@ class _ChallengeState extends State<Challenge> {
         ListTile(title: title),
         ListTile(
             title: Text(
-          "${n.meaningShaykh} translates to ${n.arabic}",
+          "${n.arabic} translates to ${n.meaningShaykh}",
           textAlign: TextAlign.center,
         )),
       ];
@@ -237,7 +249,8 @@ class _ChallengeState extends State<Challenge> {
 
     bool isCorrect;
     if (isEnglish == true) {
-      if (n.arabic.toLowerCase().compareTo(answer.toLowerCase()) == 0) {
+      if (n.transliteration.toLowerCase().compareTo(answer.toLowerCase()) ==
+          0) {
         isCorrect = true;
       }
     } else {
@@ -258,65 +271,105 @@ class _ChallengeState extends State<Challenge> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ListTile(title: Text("Do you know the meaning of?")),
-                Center(
-                  child: getTitle(n, isEnglish),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      child: TextField(
-                        controller: _controller,
-                        onSubmitted: (String value) {
-                          checkAnswer(n, value, isEnglish);
-                          _controller.clear();
-                        },
-                        decoration: InputDecoration(
-                            labelText: 'Enter your answer',
-                            border: UnderlineInputBorder()),
-                      ),
-                      width: MediaQuery.of(context).size.width * 0.9,
+    return Center(
+      child: FutureBuilder<Name>(
+        future: futureName,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            Name n = snapshot.data;
+            return Scaffold(
+              body: Column(
+                children: [
+                  Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ListTile(title: Text("Do you know the meaning of?")),
+                        Center(
+                          child: getTitle(n, isEnglish),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              child: TextField(
+                                controller: _controller,
+                                onSubmitted: (String value) {
+                                  checkAnswer(n, value, isEnglish);
+                                  _controller.clear();
+                                  setState(() {
+                                    futureName = fetchName(
+                                        "https://ninety9names.herokuapp.com/bff/names/r");
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                    labelText: 'Enter your answer',
+                                    border: UnderlineInputBorder()),
+                              ),
+                              width: MediaQuery.of(context).size.width * 0.9,
+                            ),
+                          ],
+                        ),
+                        RaisedButton(
+                          onPressed: () {
+                            checkAnswer(n, _controller.text, isEnglish);
+                            _controller.clear();
+                            setState(() {
+                              futureName = fetchName(
+                                  "https://ninety9names.herokuapp.com/bff/names/r");
+                            });
+                          },
+                          color: Colors.green,
+                          child: Text("Submit"),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                RaisedButton(
-                  onPressed: () {
-                    checkAnswer(n, _controller.text, isEnglish);
-                    _controller.clear();
-                  },
-                  color: Colors.green,
-                  child: Text("Submit"),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (int index) {
-          setState(() {
-            _currentIndex = index;
-            isEnglish = index == 1;
-          });
-        },
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.translate), title: Text("Arabic")),
+                  ),
+                ],
+              ),
+              bottomNavigationBar: BottomNavigationBar(
+                onTap: (int index) {
+                  setState(() {
+                    futureName = fetchName(
+                        "https://ninety9names.herokuapp.com/bff/names/r");
+                  });
+                  _currentIndex = index;
+                  isEnglish = index == 1;
+                },
+                currentIndex: _currentIndex,
+                items: [
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.translate), title: Text("Arabic")),
 //            BottomNavigationBarItem(
 //                icon: Icon(Icons.trending_up), title: Text("High Scores")),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.text_format), title: Text("English")),
-        ],
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.text_format), title: Text("English")),
+                ],
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Icons.error_outline,
+                    color: Colors.red,
+                    size: 60,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: Text('Error: ${snapshot.error}'),
+                  )
+                ],
+              ),
+            );
+          }
+          // By default, show a loading spinner.
+          return CircularProgressIndicator();
+        },
       ),
     );
   }
@@ -367,7 +420,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   Future<List<Name>> futureNames;
 
-  Future<List<Name>> fetchName(String url) async {
+  Future<List<Name>> fetchNames(String url) async {
     final response = await http.get(url);
     if (response.statusCode == 200) {
       var names = json.decode(response.body) as List;
@@ -380,7 +433,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    futureNames = fetchName("https://ninety9names.herokuapp.com/bff/names");
+    futureNames = fetchNames("https://ninety9names.herokuapp.com/bff/names");
   }
 
   @override
