@@ -1,6 +1,6 @@
 # ninety9names
 
-Flutter implementation of SA Bodhanya's Excel 99names application
+Flutter implementation of SA Bodhanya's Excel 99names [application](https://github.com/thameezb/ninety9names_go/blob/master/orig.xlsx)
 
 ## How to contribute
 - Please see [issues](https://github.com/thameezb/ninety9names_flutter/issues/) to assit with currently required tasks
