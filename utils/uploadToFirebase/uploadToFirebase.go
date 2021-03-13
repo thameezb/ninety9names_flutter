@@ -9,7 +9,6 @@ import (
 
 	firebase "firebase.google.com/go"
 	"firebase.google.com/go/db"
-	"google.golang.org/api/option"
 )
 
 type Name struct {
@@ -23,7 +22,7 @@ type Name struct {
 func main() {
 	dbURL := os.Getenv("FIREBASEDB_URL")
 	if dbURL == "" {
-		dbURL = "https://ninety9names-76425-default-rtdb.europe-west1.firebaseio.com"
+		dbURL = "https://ninety9names-3b97e-default-rtdb.firebaseio.com/"
 	}
 	db, err := mustInitDB(dbURL)
 	if err != nil {
@@ -46,8 +45,7 @@ func main() {
 }
 
 func mustInitDB(dbURL string) (*db.Client, error) {
-	opt := option.WithCredentialsFile("sa.json")
-	app, err := firebase.NewApp(context.Background(), nil, opt)
+	app, err := firebase.NewApp(context.Background(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -89,7 +87,7 @@ func readCSVData(path string) (*[]Name, error) {
 
 func writeToFireBase(names *[]Name, db *db.Client) error {
 	for _, n := range *names {
-		if err := db.NewRef(fmt.Sprintf("names/%s", n.ID)).Set(context.Background(), names); err != nil {
+		if err := db.NewRef(fmt.Sprintf("names/%s", n.ID)).Set(context.Background(), n); err != nil {
 			return err
 		}
 	}
