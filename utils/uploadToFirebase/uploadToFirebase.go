@@ -46,17 +46,13 @@ func main() {
 }
 
 func mustInitDB(dbURL string) (*db.Client, error) {
-	config := &firebase.Config{
-		DatabaseURL: dbURL,
-		ProjectID:   "ninety9names-76425",
-	}
 	opt := option.WithCredentialsFile("sa.json")
-	app, err := firebase.NewApp(context.Background(), config, opt)
+	app, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil {
 		return nil, err
 	}
 
-	db, err := app.Database(context.Background())
+	db, err := app.DatabaseWithURL(context.Background(), dbURL)
 	if err != nil {
 		return nil, err
 	}
