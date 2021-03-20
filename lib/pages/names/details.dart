@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ninety9names/pages/names/model.dart';
@@ -29,9 +28,7 @@ class Details extends StatelessWidget {
         title: Text(n.arabic),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: ListView(
           children: displayName(n),
         ),
       ),
