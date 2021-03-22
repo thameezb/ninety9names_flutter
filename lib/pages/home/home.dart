@@ -8,19 +8,19 @@ import 'package:ninety9names/pages/names/model.dart';
 import 'package:http/http.dart' as http;
 import 'package:ninety9names/pages/names/viewAll.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
+class Home extends StatefulWidget {
+  Home({Key? key, this.title}) : super(key: key);
+  final String? title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomeState createState() => _HomeState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  Future<List<Name>> futureNames;
+class _HomeState extends State<Home> {
+  Future<List<Name>>? futureNames;
 
   Future<List<Name>> fetchNames(String url) async {
-    final response = await http.get(url);
+    final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       var names = json.decode(response.body) as List;
       return names.map((n) => Name.fromJson(n)).toList();
@@ -41,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-            title: Text(widget.title),
+            title: Text(widget.title!),
             bottom: TabBar(tabs: [
               Tab(text: 'Names'),
               Tab(text: 'Challenge'),
