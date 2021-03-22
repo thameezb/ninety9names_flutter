@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ninety9names/pages/names/model.dart';
+import 'package:ninety9names/repo/name.dart';
 
 List<Widget> displayName(Name n) {
   Widget formatFields(String t, String st) {
@@ -11,8 +11,6 @@ List<Widget> displayName(Name n) {
     formatFields('Number:', n.id!),
     formatFields('Arabic:', n.arabic!),
     formatFields('Transliteration:', n.transliteration!),
-    formatFields('Meaning:', n.meaningGeneral!),
-    formatFields("Shaykh's meaning:", n.meaningShaykh!),
     formatFields('Explanation:', n.explanation!),
   ]);
 }

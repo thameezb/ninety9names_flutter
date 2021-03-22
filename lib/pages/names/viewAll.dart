@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'model.dart';
+import '../../repo/name.dart';
 
 Widget returnFutureBuilder(future, func) {
   return Center(

@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ninety9names/pages/about/about.dart';
 import 'package:ninety9names/pages/challenge/challenge.dart';
-import 'package:ninety9names/pages/names/model.dart';
+import 'package:ninety9names/repo/name.dart';
 import 'package:http/http.dart' as http;
 import 'package:ninety9names/pages/names/viewAll.dart';
 
