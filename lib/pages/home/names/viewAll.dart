@@ -44,7 +44,7 @@ class _ViewAllNamesState extends State<ViewAllNames> {
                     },
                     behavior: HitTestBehavior.translucent,
                     child: ListTile(
-                      title: Text('${n.id}. ${n.transliteration}'),
+                      title: Text(n.transliteration!),
                       trailing: Text(n.arabic!),
                     ),
                   ),

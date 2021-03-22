@@ -27,7 +27,6 @@ List<Widget> displayName(Name n) {
   }
 
   return ([
-    formatFields('Number:', n.id!),
     formatFields('Arabic:', n.arabic!),
     formatFields('Transliteration:', n.transliteration!),
     formatFields('Explanation:', n.explanation!),

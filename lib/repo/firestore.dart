@@ -8,10 +8,16 @@ class Repository {
 
   Stream<List<Name>> getNames() {
     return _firestore.collection("names").snapshots().map((snapshot) {
-      return snapshot.docs
-          .map((name) => Name(name['id'], name['arabic'],
-              name['transliteration'], name['meaning'], name['explanation']))
+      List<Name> names = snapshot.docs
+          .map((name) => Name(
+              name['ID'],
+              name['Arabic'],
+              name['Transliteration'],
+              name['MeaningShaykh'],
+              name['Explanation']))
           .toList();
+      names.sort((a, b) => a.id!.compareTo(b.id!));
+      return names;
     });
   }
 }
