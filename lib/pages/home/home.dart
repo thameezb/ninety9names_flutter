@@ -16,20 +16,20 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: Text(widget.title!),
           bottom: TabBar(tabs: [
             Tab(text: 'Names'),
-            // Tab(text: 'Challenge'),
+            Tab(text: 'Challenge'),
             Tab(text: 'About'),
           ]),
         ),
         body: TabBarView(
           children: [
             ViewAllNames(),
-            // Challenge(),
+            Challenge(),
             About(),
           ],
         ),
