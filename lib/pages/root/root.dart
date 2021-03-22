@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ninety9names/repo/firestore.dart';
 import 'package:ninety9names/routes/routes.dart';
+import 'package:provider/provider.dart';
 
 class Ninety9Names extends StatefulWidget {
   _Ninety9NamesState createState() => _Ninety9NamesState();
@@ -38,14 +41,17 @@ class _Ninety9NamesState extends State<Ninety9Names> {
     if (!_initialized) {
       return CircularProgressIndicator();
     }
-    return MaterialApp(
-      title: 'ninety9names',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return Provider(
+      create: (_) => Repository(FirebaseFirestore.instance),
+      child: MaterialApp(
+        title: 'ninety9names',
+        theme: ThemeData(
+          primarySwatch: Colors.green,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        initialRoute: '/',
+        routes: getRoutes(),
       ),
-      initialRoute: '/',
-      routes: getRoutes(),
     );
   }
 }
