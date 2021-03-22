@@ -58,10 +58,8 @@ class _DisplayChallengeState extends State<DisplayChallenge> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    ListTile(title: Text("Do you know the meaning of?")),
-                    Center(
-                      child: getTitle(currentName, widget.isEnglish),
-                    ),
+                    ChallengeTitle(
+                        isEnglish: widget.isEnglish, currentName: currentName),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
