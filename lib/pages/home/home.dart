@@ -41,12 +41,13 @@ class _HomeState extends State<Home> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-            title: Text(widget.title!),
-            bottom: TabBar(tabs: [
-              Tab(text: 'Names'),
-              Tab(text: 'Challenge'),
-              Tab(text: 'About'),
-            ])),
+          title: Text(widget.title!),
+          bottom: TabBar(tabs: [
+            Tab(text: 'Names'),
+            Tab(text: 'Challenge'),
+            Tab(text: 'About'),
+          ]),
+        ),
         body: TabBarView(
           children: [
             ViewAllNames(futureNames: futureNames),
