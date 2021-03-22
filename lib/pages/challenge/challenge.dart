@@ -12,9 +12,9 @@ class Challenge extends StatefulWidget {
 }
 
 class _ChallengeState extends State<Challenge> {
-  Future<Name> futureName;
-  TextEditingController _controller;
-  bool isEnglish;
+  Future<Name>? futureName;
+  TextEditingController? _controller;
+  bool? isEnglish;
   int _currentIndex = 0;
   int score = 0;
 
@@ -36,11 +36,11 @@ class _ChallengeState extends State<Challenge> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller!.dispose();
     super.dispose();
   }
 
-  displayAnswer(Name n, bool isCorrect, isEnglish) async {
+  displayAnswer(Name n, bool? isCorrect, isEnglish) async {
     Column title = Column(
       children: [
         Icon(Icons.thumb_down, color: Colors.red),
@@ -103,31 +103,31 @@ class _ChallengeState extends State<Challenge> {
     );
   }
 
-  checkAnswer(Name n, String answer, bool isEnglish) async {
+  checkAnswer(Name n, String answer, bool? isEnglish) async {
     if (answer == "") {
       return null;
     }
 
-    bool isCorrect;
+    bool? isCorrect;
     if (isEnglish == true) {
-      if (n.transliteration.toLowerCase().compareTo(answer.toLowerCase()) ==
+      if (n.transliteration!.toLowerCase().compareTo(answer.toLowerCase()) ==
           0) {
         isCorrect = true;
       }
     } else {
-      if (n.meaningShaykh.toLowerCase().compareTo(answer.toLowerCase()) == 0) {
+      if (n.meaningShaykh!.toLowerCase().compareTo(answer.toLowerCase()) == 0) {
         isCorrect = true;
       }
     }
     await displayAnswer(n, isCorrect, isEnglish);
   }
 
-  Text getTitle(Name n, bool isEnglish) {
-    String title = "${n.arabic} - ${n.transliteration}";
+  Text getTitle(Name n, bool? isEnglish) {
+    String? title = "${n.arabic} - ${n.transliteration}";
     if (isEnglish == true) {
       title = n.meaningShaykh;
     }
-    return Text(title, style: TextStyle(fontSize: 25));
+    return Text(title!, style: TextStyle(fontSize: 25));
   }
 
   @override
@@ -137,7 +137,7 @@ class _ChallengeState extends State<Challenge> {
         future: futureName,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            Name n = snapshot.data;
+            Name n = snapshot.data!;
             return Scaffold(
               body: Column(
                 children: [
@@ -158,7 +158,7 @@ class _ChallengeState extends State<Challenge> {
                                 controller: _controller,
                                 onSubmitted: (String value) {
                                   checkAnswer(n, value, isEnglish);
-                                  _controller.clear();
+                                  _controller!.clear();
                                   setState(() {
                                     futureName = fetchName(
                                         "https://ninety9names.herokuapp.com/bff/names/r");
@@ -174,8 +174,8 @@ class _ChallengeState extends State<Challenge> {
                         ),
                         RaisedButton(
                           onPressed: () {
-                            checkAnswer(n, _controller.text, isEnglish);
-                            _controller.clear();
+                            checkAnswer(n, _controller!.text, isEnglish);
+                            _controller!.clear();
                             setState(() {
                               futureName = fetchName(
                                   "https://ninety9names.herokuapp.com/bff/names/r");

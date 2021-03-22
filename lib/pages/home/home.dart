@@ -9,15 +9,15 @@ import 'package:http/http.dart' as http;
 import 'package:ninety9names/pages/names/viewAll.dart';
 
 class Home extends StatefulWidget {
-  Home({Key key, this.title}) : super(key: key);
-  final String title;
+  Home({Key? key, this.title}) : super(key: key);
+  final String? title;
 
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  Future<List<Name>> futureNames;
+  Future<List<Name>>? futureNames;
 
   Future<List<Name>> fetchNames(String url) async {
     final response = await http.get(Uri.parse(url));
@@ -41,7 +41,7 @@ class _HomeState extends State<Home> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-            title: Text(widget.title),
+            title: Text(widget.title!),
             bottom: TabBar(tabs: [
               Tab(text: 'Names'),
               Tab(text: 'Challenge'),

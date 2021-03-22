@@ -1,10 +1,10 @@
 class Name {
-  final String id;
-  final String arabic;
-  final String transliteration;
-  final String meaningShaykh;
-  final String meaningGeneral;
-  final String explanation;
+  final String? id;
+  final String? arabic;
+  final String? transliteration;
+  final String? meaningShaykh;
+  final String? meaningGeneral;
+  final String? explanation;
 
   Name(this.id, this.arabic, this.transliteration, this.meaningShaykh,
       this.meaningGeneral, this.explanation);

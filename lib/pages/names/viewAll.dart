@@ -37,8 +37,8 @@ Widget returnFutureBuilder(future, func) {
 }
 
 class ViewAllNames extends StatefulWidget {
-  ViewAllNames({Key key, this.futureNames}) : super(key: key);
-  final Future<List<Name>> futureNames;
+  ViewAllNames({Key? key, this.futureNames}) : super(key: key);
+  final Future<List<Name>>? futureNames;
   @override
   _ViewAllNamesState createState() => _ViewAllNamesState();
 }
@@ -55,7 +55,7 @@ class _ViewAllNamesState extends State<ViewAllNames> {
             behavior: HitTestBehavior.translucent,
             child: ListTile(
               title: Text('${n.id}. ${n.transliteration}'),
-              trailing: Text(n.arabic),
+              trailing: Text(n.arabic!),
             ),
           ),
         ))

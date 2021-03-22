@@ -8,12 +8,12 @@ List<Widget> displayName(Name n) {
   }
 
   return ([
-    formatFields('Number:', n.id),
-    formatFields('Arabic:', n.arabic),
-    formatFields('Transliteration:', n.transliteration),
-    formatFields('Meaning:', n.meaningGeneral),
-    formatFields("Shaykh's meaning:", n.meaningShaykh),
-    formatFields('Explanation:', n.explanation),
+    formatFields('Number:', n.id!),
+    formatFields('Arabic:', n.arabic!),
+    formatFields('Transliteration:', n.transliteration!),
+    formatFields('Meaning:', n.meaningGeneral!),
+    formatFields("Shaykh's meaning:", n.meaningShaykh!),
+    formatFields('Explanation:', n.explanation!),
   ]);
 }
 
@@ -22,10 +22,10 @@ class Details extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Name n = ModalRoute.of(context).settings.arguments;
+    final Name n = ModalRoute.of(context)!.settings.arguments as Name;
     return Scaffold(
       appBar: AppBar(
-        title: Text(n.arabic),
+        title: Text(n.arabic!),
       ),
       body: Center(
         child: ListView(
