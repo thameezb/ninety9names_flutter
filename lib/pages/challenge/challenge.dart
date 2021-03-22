@@ -19,7 +19,7 @@ class _ChallengeState extends State<Challenge> {
   int score = 0;
 
   Future<Name> fetchName(String url) async {
-    final response = await http.get(url);
+    final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       return Name.fromJson(json.decode(response.body));
     } else {
@@ -73,9 +73,9 @@ class _ChallengeState extends State<Challenge> {
         ListTile(title: title),
         ListTile(
             title: Text(
-              "${n.arabic} translates to ${n.meaningShaykh}",
-              textAlign: TextAlign.center,
-            )),
+          "${n.arabic} translates to ${n.meaningShaykh}",
+          textAlign: TextAlign.center,
+        )),
       ];
       dialog.addAll(displayName(n));
       return dialog;

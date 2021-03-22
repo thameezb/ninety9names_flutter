@@ -20,7 +20,7 @@ class _HomeState extends State<Home> {
   Future<List<Name>> futureNames;
 
   Future<List<Name>> fetchNames(String url) async {
-    final response = await http.get(url);
+    final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       var names = json.decode(response.body) as List;
       return names.map((n) => Name.fromJson(n)).toList();
