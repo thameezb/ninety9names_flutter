@@ -30,6 +30,7 @@
 .pub-cache/
 .pub/
 /build/
+ninety9names-adminsdk.json
 
 # Web related
 lib/generated_plugin_registrant.dart
