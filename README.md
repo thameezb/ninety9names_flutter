@@ -14,7 +14,3 @@ Flutter implementation of SA Bodhanya's Excel 99names [application](https://gith
 - Branch names should be descriptive or linked to a detailed issue
 
 Please consider the master branch as stable (at all times)
-
-## Utilities
-
-[utilities](./utils) - contains set of utilities useful for application.
