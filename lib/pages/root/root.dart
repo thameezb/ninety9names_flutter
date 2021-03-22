@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ninety9names/pages/root/routes/routes.dart';
 import 'package:ninety9names/repo/firestore.dart';
-import 'package:ninety9names/routes/routes.dart';
 import 'package:provider/provider.dart';
 
 class Ninety9Names extends StatefulWidget {
