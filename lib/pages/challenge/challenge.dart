@@ -90,11 +90,10 @@ class _ChallengeState extends State<Challenge> {
             child: Column(children: getDialog(n)),
           ),
           actions: [
-            FlatButton(
+            ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              color: Colors.green,
               child: Text("Try another"),
             )
           ],
@@ -172,7 +171,7 @@ class _ChallengeState extends State<Challenge> {
                             ),
                           ],
                         ),
-                        RaisedButton(
+                        ElevatedButton(
                           onPressed: () {
                             checkAnswer(n, _controller!.text, isEnglish);
                             _controller!.clear();
@@ -181,7 +180,6 @@ class _ChallengeState extends State<Challenge> {
                                   "https://ninety9names.herokuapp.com/bff/names/r");
                             });
                           },
-                          color: Colors.green,
                           child: Text("Submit"),
                         ),
                       ],
@@ -201,11 +199,11 @@ class _ChallengeState extends State<Challenge> {
                 currentIndex: _currentIndex,
                 items: [
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.translate), title: Text("Arabic")),
+                      icon: Icon(Icons.translate), label: "Arabic"),
 //            BottomNavigationBarItem(
 //                icon: Icon(Icons.trending_up), title: Text("High Scores")),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.text_format), title: Text("English")),
+                      icon: Icon(Icons.text_format), label: "English"),
                 ],
               ),
             );
