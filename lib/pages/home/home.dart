@@ -8,15 +8,15 @@ import 'package:ninety9names/pages/names/model.dart';
 import 'package:http/http.dart' as http;
 import 'package:ninety9names/pages/names/viewAll.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class Home extends StatefulWidget {
+  Home({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomeState createState() => _HomeState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomeState extends State<Home> {
   Future<List<Name>> futureNames;
 
   Future<List<Name>> fetchNames(String url) async {
