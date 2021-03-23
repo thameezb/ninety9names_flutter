@@ -40,11 +40,12 @@ class _DisplayChallengeState extends State<DisplayChallenge> {
         stream: _namesStream,
         builder: (BuildContext context, AsyncSnapshot<List<Name>> snapshot) {
           if (snapshot.hasError) {
-            return ErrorWidget(
-                "Failed to read snapshot data -" + snapshot.error.toString());
+            return Center(
+                child: ErrorWidget("Failed to read snapshot data -" +
+                    snapshot.error.toString()));
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           }
 
           List<Name> names = snapshot.data!;
