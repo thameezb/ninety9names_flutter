@@ -55,7 +55,7 @@ class AnswerTextBox extends StatelessWidget {
     if (isEnglish) {
       return 'Answers may be in Arabic or English transliteration';
     }
-    return 'For Arabic names with multiple English meanings, only a single English meaning is required';
+    return 'Only a single English meaning is required';
   }
 
   void _handleSubmit(
