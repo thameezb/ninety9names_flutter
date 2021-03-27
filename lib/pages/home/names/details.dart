@@ -33,6 +33,7 @@ List<Widget> displayName(Name n) {
   return ([
     formatFields('Arabic:', n.arabic!),
     formatFields('Transliteration:', n.transliteration!),
+    formatFields('Meaning:', n.meaning!),
     formatFields('Explanation:', n.explanation!),
   ]);
 }
