@@ -10,7 +10,11 @@ class Details extends StatelessWidget {
     final Name n = ModalRoute.of(context)!.settings.arguments as Name;
     return Scaffold(
       appBar: AppBar(
-        title: Text(n.arabic!),
+        centerTitle: true,
+        title: Text(
+          n.arabic!.trim() + '  ',
+          textDirection: TextDirection.rtl,
+        ),
       ),
       body: Center(
         child: ListView(
