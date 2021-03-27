@@ -23,12 +23,14 @@ bool checkAnswer(Name name, String answer, bool isEnglish) {
   }
 
   if (isEnglish == true) {
-    return (name.transliteration!
-                .toLowerCase()
-                .compareTo(answer.toLowerCase()) ==
+    return (_sanitize(name.transliteration!).compareTo(_sanitize(answer)) ==
             0 ||
-        name.arabic!.toLowerCase().compareTo(answer.toLowerCase()) == 0);
+        _sanitize(name.arabic!).compareTo(_sanitize(answer)) == 0);
   } else {
-    return (name.meaning!.toLowerCase().compareTo(answer.toLowerCase()) == 0);
+    return (_sanitize(name.meaning!).compareTo(_sanitize(answer)) == 0);
   }
+}
+
+String _sanitize(String input) {
+  return input.replaceAll('-', ' ').toLowerCase().trim();
 }
