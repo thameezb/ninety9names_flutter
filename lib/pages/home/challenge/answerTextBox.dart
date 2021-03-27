@@ -27,8 +27,10 @@ class AnswerTextBox extends StatelessWidget {
             child: TextField(
               controller: controller,
               decoration: InputDecoration(
-                  labelText: 'Enter your answer',
-                  border: UnderlineInputBorder()),
+                labelText: 'Enter your answer',
+                border: UnderlineInputBorder(),
+                helperText: _getHelperText(isEnglish),
+              ),
               onSubmitted: (String answer) {
                 _handleSubmit(currentName, answer, isEnglish,
                     setCurrentNameState, clearController, context);
@@ -47,6 +49,13 @@ class AnswerTextBox extends StatelessWidget {
         ]),
       ],
     );
+  }
+
+  String _getHelperText(bool isEnglish) {
+    if (isEnglish) {
+      return 'Answers may be in Arabic or English transliteration';
+    }
+    return 'For Arabic names with multiple English meanings, only a single English meaning is required';
   }
 
   void _handleSubmit(
