@@ -15,11 +15,8 @@ class DisplayChallenge extends StatefulWidget {
 }
 
 class _DisplayChallengeState extends State<DisplayChallenge> {
-  _DisplayChallengeState();
-
   late Stream<List<Name>> _namesStream;
   late TextEditingController _controller;
-  int score = 0;
 
   @override
   initState() {

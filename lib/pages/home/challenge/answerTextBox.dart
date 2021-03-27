@@ -26,13 +26,13 @@ class AnswerTextBox extends StatelessWidget {
           Container(
             child: TextField(
               controller: controller,
-              onSubmitted: (String answer) {
-                handleSubmit(currentName, answer, isEnglish,
-                    setCurrentNameState, clearController);
-              },
               decoration: InputDecoration(
                   labelText: 'Enter your answer',
                   border: UnderlineInputBorder()),
+              onSubmitted: (String answer) {
+                _handleSubmit(currentName, answer, isEnglish,
+                    setCurrentNameState, clearController, context);
+              },
             ),
             width: MediaQuery.of(context).size.width * 0.9,
           ),
@@ -40,8 +40,8 @@ class AnswerTextBox extends StatelessWidget {
         Column(children: [
           ElevatedButton(
               onPressed: () {
-                handleSubmit(currentName, controller.text, isEnglish,
-                    setCurrentNameState, clearController);
+                _handleSubmit(currentName, controller.text, isEnglish,
+                    setCurrentNameState, clearController, context);
               },
               child: Text("Submit"))
         ]),
@@ -49,15 +49,15 @@ class AnswerTextBox extends StatelessWidget {
     );
   }
 
-  Future<void> handleSubmit(
-    Name currentName,
-    String answer,
-    bool isEnglish,
-    VoidCallback setCurrentNameState,
-    VoidCallback clearController,
-  ) async {
-    await displayAnswer(
-        currentName, checkAnswer(currentName, answer, isEnglish), isEnglish);
+  void _handleSubmit(
+      Name currentName,
+      String answer,
+      bool isEnglish,
+      VoidCallback setCurrentNameState,
+      VoidCallback clearController,
+      BuildContext context) {
+    displayAnswer(
+        currentName, checkAnswer(currentName, answer, isEnglish), context);
     setCurrentNameState();
     clearController();
   }
