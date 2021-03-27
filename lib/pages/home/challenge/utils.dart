@@ -31,7 +31,16 @@ bool checkAnswer(Name name, String answer, bool isEnglish) {
             0 ||
         _sanitize(name.arabic!).compareTo(_sanitize(answer)) == 0);
   } else {
-    return (_sanitize(name.meaning!).compareTo(_sanitize(answer)) == 0);
+    List<String> compound = name.meaning!.split(";");
+    if (compound.length == 0) {
+      return (_sanitize(name.meaning!).compareTo(_sanitize(answer)) == 0);
+    }
+    for (String c in compound) {
+      if (_sanitize(c).compareTo(_sanitize(answer)) == 0) {
+        isCorrect = true;
+      }
+    }
+    return isCorrect;
   }
 }
 
