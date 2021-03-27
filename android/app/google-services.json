@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "845895418763",
+    "firebase_url": "https://ninety9names-3b97e-default-rtdb.firebaseio.com",
+    "project_id": "ninety9names-3b97e",
+    "storage_bucket": "ninety9names-3b97e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:845895418763:android:5c75379b7b01ba3924a58e",
+        "android_client_info": {
+          "package_name": "com.tabodhanya.ninety9names"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "845895418763-m8qre9qinudp32hm2s37fje1qentj4oj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMbuB2wtbdnDnN0FIa3hGa2S9vhMrPu0U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "845895418763-m8qre9qinudp32hm2s37fje1qentj4oj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
