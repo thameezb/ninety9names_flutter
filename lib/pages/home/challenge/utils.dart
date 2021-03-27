@@ -13,7 +13,11 @@ Text getTitleText(Name n, bool isEnglish) {
   if (isEnglish == true) {
     title = n.meaning;
   }
-  return Text(title!, style: TextStyle(fontSize: 25));
+  return Text(
+    title!,
+    style: TextStyle(fontSize: 20),
+    textAlign: TextAlign.center,
+  );
 }
 
 bool checkAnswer(Name name, String answer, bool isEnglish) {
