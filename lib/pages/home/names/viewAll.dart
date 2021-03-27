@@ -28,11 +28,12 @@ class _ViewAllNamesState extends State<ViewAllNames> {
   Widget _displayNames(
       BuildContext context, AsyncSnapshot<List<Name>> snapshot) {
     if (snapshot.hasError) {
-      return ErrorWidget(
-          "Failed to read snapshot data -" + snapshot.error.toString());
+      return Center(
+          child: ErrorWidget(
+              "Failed to read snapshot data -" + snapshot.error.toString()));
     }
     if (snapshot.connectionState == ConnectionState.waiting) {
-      return CircularProgressIndicator();
+      return Center(child: CircularProgressIndicator());
     }
 
     return ListView(

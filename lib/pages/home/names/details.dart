@@ -23,7 +23,7 @@ class Details extends StatelessWidget {
 
 List<Widget> displayName(Name n) {
   Widget formatFields(String t, String st) {
-    return Expanded(child: ListTile(title: Text(t), subtitle: Text(st)));
+    return ListTile(title: Text(t), subtitle: Text(st));
   }
 
   return ([
