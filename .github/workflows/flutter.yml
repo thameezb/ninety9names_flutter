@@ -12,6 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - env:
+          KEY_JKS: ${{ secrets.KEY_JKS }}
+          KEY_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
+          ALIAS_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: echo $KEY_JKS > android/key.jks && ls -l android
       - uses: actions/setup-java@v1
         with:
           java-version: "12.x"
