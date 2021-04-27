@@ -19,12 +19,15 @@ jobs:
         with:
           channel: "stable"
       - run: flutter pub get
-      #      - run: flutter test
-      - run: flutter build apk
+      - env:
+          KEY_JKS: ${{ secrets.KEY_JKS }}
+          KEY_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
+          ALIAS_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: $KEY_JKS > android/key.jks && flutter build apk
       - uses: actions/upload-artifact@v2
         with:
           name: ninety9names.apk
-          path: build/app/outputs/flutter-apk/ninety9names.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
 
   build-web:
     name: Build Web
@@ -38,7 +41,6 @@ jobs:
         with:
           channel: "stable"
       - run: flutter pub get
-      #      - run: flutter test
       - run: flutter build web
       - run: |
           cd build
