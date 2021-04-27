@@ -12,6 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - env:
+          KEY_JKS: ${{ secrets.KEY_JKS }}
+          KEY_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
+          ALIAS_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: echo $KEY_JKS > android/key.jks && cat android/key.jks
       - uses: actions/setup-java@v1
         with:
           java-version: "12.x"
@@ -23,7 +28,7 @@ jobs:
           KEY_JKS: ${{ secrets.KEY_JKS }}
           KEY_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
           ALIAS_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: echo $KEY_JKS | base64 -d > android/key.jks && flutter build apk
+        run: echo $KEY_JKS > android/key.jks && flutter build apk
       - uses: actions/upload-artifact@v2
         with:
           name: ninety9names.apk
